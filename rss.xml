@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Simulated thoughts</title>
+        <link>simulatedthoughts.blog</link>
+        <description></description>
+        <generator>Zola</generator>
+        <language>en</language>
+        <atom:link href="simulatedthoughts.blog/rss.xml" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>Tue, 05 May 2020 00:00:00 +0000</lastBuildDate>
+        
+            <item>
+                <title>BRPP lifecycles | Simulated thoughts</title>
+                <pubDate>Tue, 05 May 2020 00:00:00 +0000</pubDate>
+                <link>simulatedthoughts.blog/blog/brpp-lifecycle/</link>
+                <guid>simulatedthoughts.blog/blog/brpp-lifecycle/</guid>
+                <description>&lt;p&gt;Lorem ipsum&lt;&#x2F;p&gt;
+</description>
+                <content:encoded>&lt;p&gt;Lorem ipsum&lt;&#x2F;p&gt;
+</content:encoded>
+            </item>
+        
+    </channel>
+</rss>

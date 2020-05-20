@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: simulatedthoughts.blog/sitemap.xml
