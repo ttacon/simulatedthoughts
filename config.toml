@@ -1,5 +1,5 @@
 # The base URL of the site; the only required configuration variable.
-base_url = "simulatedthoughts.blog"
+base_url = "https://simulatedthoughts.blog"
 
 # The site title and description; used in RSS by default.
 title = "Simulated thoughts"
