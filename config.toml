@@ -41,7 +41,8 @@ generate_rss = true
 #     ]
 #
 taxonomies = [
-  { name = "security", rss = true },
+  { name = "categories", rss = true },
+  { name = "tags", rss = true },
 ]
 
 # The additional languages for the site.

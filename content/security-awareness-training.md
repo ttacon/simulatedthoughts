@@ -1,8 +1,6 @@
 +++
 title = "Security awareness training that actually helps"
 date = 2020-07-17
-[taxonomies]
-categories = [ "security" ]
 +++
 
 # Security awareness training
