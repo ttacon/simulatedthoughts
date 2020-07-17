@@ -40,7 +40,10 @@ generate_rss = true
 #       {name = "authors"}, # Basic definition: no RSS or pagination
 #     ]
 #
-taxonomies = []
+taxonomies = [{
+    name = "security",
+    rss = true
+}]
 
 # The additional languages for the site.
 # Example:
