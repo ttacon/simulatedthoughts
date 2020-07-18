@@ -15,7 +15,9 @@ awareness training program that:
  2. Will stick with your staff for very, very long periods of time
 
 # First things first: NIST 800-50
-If you've never read [NIST 800-50](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-50.pdf), you should. While it's certainly dry, and fairly old, it containes invaluable information. So go read it and then come back here.
+If you've never read [NIST 800-50](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-50.pdf),
+you should. While it's certainly dry, and fairly old, it contains invaluable
+information. So go read it and then come back here.
 
 # How to make security awareness training fun and impactful
 
