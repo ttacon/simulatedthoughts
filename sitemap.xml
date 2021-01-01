@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://simulatedthoughts.blog/</loc>
+    </url>
+    <url>
+        <loc>https://simulatedthoughts.blog/blog/brpp-lifecycle/</loc>
+        <lastmod>2020-05-05</lastmod>
+    </url>
+    <url>
+        <loc>https://simulatedthoughts.blog/education-vs-training/</loc>
+        <lastmod>2021-01-01</lastmod>
+    </url>
+    <url>
+        <loc>https://simulatedthoughts.blog/page/1/</loc>
+    </url>
+    <url>
+        <loc>https://simulatedthoughts.blog/running-arbitrary-code-with-terraform/</loc>
+        <lastmod>2020-07-23</lastmod>
+    </url>
+    <url>
+        <loc>https://simulatedthoughts.blog/security-awareness-training/</loc>
+        <lastmod>2020-07-17</lastmod>
+    </url>
+</urlset>

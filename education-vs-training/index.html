@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="referrer" content="no-referrer">
+
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+        <title>Education vs Training | Simulated thoughts</title>
+<meta property="og:title" content="Education vs Training | Simulated thoughts" />
+<meta name="twitter:title" content="Education vs Training | Simulated thoughts" />
+
+        
+
+        <meta property="og:site_name" content="Simulated thoughts" />
+        <meta property="og:url" content="https:&#x2F;&#x2F;simulatedthoughts.blog" />
+
+        
+
+
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;base.css" />
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+        <link href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;fontawesome&#x2F;fontawesome.css" rel="stylesheet">
+        <link href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;fontawesome&#x2F;brands.css" rel="stylesheet">
+        <link href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;fontawesome&#x2F;solid.css" rel="stylesheet">
+
+        <link rel='icon' type='image/x-icon' href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;favicon.ico" />
+
+        
+
+        
+
+    </head>
+    <body>
+        <a href="#main" class="skip-link p-screen-reader-text">Skip to content</a>
+        <header class="l-header">
+            <h1 class="c-title p-title"><a href="https:&#x2F;&#x2F;simulatedthoughts.blog" class="p-title__link">Simulated thoughts</a></h1>
+            <p class="p-subtitle">
+                Thoughts that may or may not have been simulated via a caffeine engine
+            </p>
+            </header>
+
+        <main id="main" class="l-main">
+            
+<article class="p-article">
+    <header>
+        <h1>Education vs Training</h1>
+        <div>
+            <div class="c-time">
+
+                <time datetime="2021-01-01">
+                    2021-01-01
+                </time>
+                
+                 - (5 min read)
+            </div>
+        </div>
+    </header>
+    
+    <section id="js-article" class="p-article__body">
+        
+    <h1 id="education-vs-training">Education vs Training<a class="zola-anchor" href="#education-vs-training" aria-label="Anchor link for: education-vs-training"><i class="fas fa-link"></i></a> 
+</h1>
+<p>I often talk about the best teacher being failure, and so a goal of mine, when
+teaching or mentoring, being to set others up to fail softly. This framing helps
+me check my own personal desires to see a project or goal succeed, and instead
+to focus on the personal growth of the individual that I'm working with.</p>
+<p>This has felt like a pretty solid perspective to me, until I was recently
+reading <code>The Art of Doing Science and Engineering</code> by Richard Hamming. As an
+aside, I'm barely 100 pages in and it's already helped me learn numerous new
+perspectives - if you enjoy learning about learning, I highly suggest it. Back
+on track, in the first few pages, Hamming distinguishes Education and Training
+from each other:</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;">Education is what, when, and why to do things.
+Training is how to do it.
+</span></code></pre>
+<p>This is a framing that I keep coming back to in my mind, in particular, helping
+me to articulate and explore the gap that I feel exists in the software world
+today.</p>
+<span id="continue-reading"></span>
+<p>Software developers of traditional backgrounds usually pursue Computer Science
+or Computer Engineering degrees (the naming varies program by program). I myself
+went this route, and I'll be honest, while I personally use many of those
+fundamentals that I learned back then nowadays, I didn't for a very long time,
+and many people that I know don't use any of them. I recall learning about
+concepts that were highly interested to me at the time, but certainly have never
+helped me hit a project milestone or sprint story point goal. It was only once I
+got into industry and began &quot;doing&quot; things that I felt I really began to learn.
+Now I acknowledge that this could have been due to me never doing a single 
+internship during school (I had thought that I wanted to go into medicine for the
+first four years), but as far as I'm aware, my story and perspective on this are
+far from unique. My education was helpful, but my training was far more so, and
+I think a lot of this is because my education was to be a computer scientist, but
+that's not at all what I am today.</p>
+<p>Instead, it would have been more helpful to have learned about how to setup
+nginx (including why I needed it) or how to use an observability tool (although
+the term didn't exist in it's current usage while I was in school). This is
+something that most folks are looking for in mentorship opportunities at
+companies. They're looking for many other things, too, but while they are doing
+their jobs (which for the vast majority of people could be considered
+compensated training, or an apprenticeship program in other parlance), they're
+looking to understand what, when and why to do the things that they're doing.</p>
+<p>Eh, I'm not sure that captures what I'm thinking at all, in fact I'm finding
+myself disagreeing with it now (mostly around the phrasing as an apprenticeship
+program, which is something I do strongly feel we need more of as an industry).
+So perhaps an example would be useful here. </p>
+<p>Refactoring. Refactoring is a mythical opportunity that many companies talk
+about and few put into practice. Refactoring is the opporunity, in its raw 
+essence, to make something better (this is not restricted to technical
+components, organizational structures would do well with refactoring, too).
+In companies that do practice refactoring, we teach our employees hwo to do it.
+Here's a good way to extract a common function. Here's a good way to add a layer
+of abstraction to support an experimental or plugin based approach. Here's a
+good way to make a function more testable. But we never, ever:</p>
+<ul>
+<li>Explain what refactoring is. In my early career, to me, refactoring meant
+moving code around for that sole, myopic purpose. No wonder management hated
+hearing that the code needed to be refactored. Instead, we should be
+explaining the numerous benefits of refactoring, and the guiding principle
+of desiring to make our systems better.</li>
+<li>Explain when refactoring is appropriate. I may be in the minority here, but
+I believe that we should always be refactoring code in an area that we're
+working in. If we're not, we're only building tech debt for later.</li>
+<li>Explain why we do refactoring. This is one where I think leaders truly drop
+the ball. Refactoring code has a direct impact on implementation quality and
+speed. It's a team's best friend, and there isn't a good reason not to do it.
+The only reason that I've ever heard is that it takes more time in the short,
+which, for me, is not a good reason not to do it.</li>
+</ul>
+<p>Yeah, that example is not terrible. Hopefully it gets across this concept that I'm
+trying to work through how to help better implement at my current place of work.
+For some engineers, in the past, I'd build them sets of scenarios to test out new
+knowledge in. I recall some specifically around learning how to setup and
+configure haproxy and nginx, the differences between them and how to choose the
+correct tool when needed. This is something that I think that I want to return
+to more this year, hopefully these can be easy to open source and others can
+learn from them, too.</p>
+<p>I'm not sure this was coherent, but I guess that the point that I'm trying to
+convey in this rambling is that we need to help educate our peers in our industry.
+While we pass on our training to others, we need to help convey the education and
+learnings behind it, and if we can't, we should strive to dig deeper and educate
+ourselves more as well.</p>
+
+
+    </section>
+    <footer>
+        <nav class="c-pagination p-pagination">
+            <div class="c-pagination__ctrl">
+                <div class="c-pagination__newer">
+                    
+                </div>
+                <div class="c-pagination__older">
+                    <a href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;running-arbitrary-code-with-terraform&#x2F;">Running arbitrary code with terraform</a>
+                </div>
+            </div>
+        </nav>
+    </footer>
+</article>
+        </main>
+
+     
+      <footer class="l-footer">
+          <p class="p-copyright">
+              
+              
+    Copyright 2020
+
+          </p>
+      </footer>
+
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-51905853-4"></script>
+      <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-51905853-4');
+      </script> 
+      
+    </body>
+</html>
+            

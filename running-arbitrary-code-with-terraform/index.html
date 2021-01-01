@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="referrer" content="no-referrer">
+
+        <!-- Enable responsiveness on mobile devices-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+        <title>Running arbitrary code with terraform | Simulated thoughts</title>
+<meta property="og:title" content="Running arbitrary code with terraform | Simulated thoughts" />
+<meta name="twitter:title" content="Running arbitrary code with terraform | Simulated thoughts" />
+
+        
+
+        <meta property="og:site_name" content="Simulated thoughts" />
+        <meta property="og:url" content="https:&#x2F;&#x2F;simulatedthoughts.blog" />
+
+        
+
+
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;base.css" />
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+        <link href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;fontawesome&#x2F;fontawesome.css" rel="stylesheet">
+        <link href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;fontawesome&#x2F;brands.css" rel="stylesheet">
+        <link href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;fontawesome&#x2F;solid.css" rel="stylesheet">
+
+        <link rel='icon' type='image/x-icon' href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;favicon.ico" />
+
+        
+
+        
+
+    </head>
+    <body>
+        <a href="#main" class="skip-link p-screen-reader-text">Skip to content</a>
+        <header class="l-header">
+            <h1 class="c-title p-title"><a href="https:&#x2F;&#x2F;simulatedthoughts.blog" class="p-title__link">Simulated thoughts</a></h1>
+            <p class="p-subtitle">
+                Thoughts that may or may not have been simulated via a caffeine engine
+            </p>
+            </header>
+
+        <main id="main" class="l-main">
+            
+<article class="p-article">
+    <header>
+        <h1>Running arbitrary code with terraform</h1>
+        <div>
+            <div class="c-time">
+
+                <time datetime="2020-07-23">
+                    2020-07-23
+                </time>
+                
+                 - (7 min read)
+            </div>
+        </div>
+    </header>
+    
+    <section id="js-article" class="p-article__body">
+        
+    <h1 id="running-arbitrary-code-with-terraform">Running arbitrary code with terraform<a class="zola-anchor" href="#running-arbitrary-code-with-terraform" aria-label="Anchor link for: running-arbitrary-code-with-terraform"><i class="fas fa-link"></i></a> 
+</h1>
+<p>I've recently been spending a lot of time thinking about zero trust systems
+and how to merge that ethos with the developer experience. This has lead me down
+a deep, deep rabbit whole trying to identify a whole slew of ways to get a foothold
+on developer systems and how to move laterally once there. All in all, the modern
+developer ecosystem is <em>highly</em> trusting, and this creates numerous opportunities
+for internal red teams, not to mention slightly more nefarious crews. Today, we're
+going to look at two very quick ways to run arbitrary code on the machines of
+developers (and build systems) before moving on to mention further avenues for
+exploration.</p>
+<span id="continue-reading"></span><h1 id="before-we-go-on">Before we go on...<a class="zola-anchor" href="#before-we-go-on" aria-label="Anchor link for: before-we-go-on"><i class="fas fa-link"></i></a> 
+</h1>
+<h2 id="disclaimer">Disclaimer<a class="zola-anchor" href="#disclaimer" aria-label="Anchor link for: disclaimer"><i class="fas fa-link"></i></a> 
+</h2>
+<p>I am not proposing that you use what I'm going to cover for nefarious purposes,
+this post is purely educational so that developers can be aware of the risks
+when using third-party code (open source or otherwise).</p>
+<h2 id="required-knowledge">Required knowledge<a class="zola-anchor" href="#required-knowledge" aria-label="Anchor link for: required-knowledge"><i class="fas fa-link"></i></a> 
+</h2>
+<p>For the rest of this post, I'm assuming that you have a working knowledge of
+bash, terraform and are familiar with terraform modules. If not, here are some
+decent sources for the terraform side of things:</p>
+<ul>
+<li><a href="https://www.terraform.io/intro/index.html">Intro to Terraform</a></li>
+<li><a href="https://learn.hashicorp.com/terraform/modules/using-modules">Using Terraform Modules</a></li>
+</ul>
+<h1 id="running-code-via-local-exec">Running code via <code>local-exec</code><a class="zola-anchor" href="#running-code-via-local-exec" aria-label="Anchor link for: running-code-via-local-exec"><i class="fas fa-link"></i></a> 
+</h1>
+<p>The first way that we're going to look at running arbitrary code is by using
+<a href="https://www.terraform.io/docs/provisioners/local-exec.html"><code>local-exec</code></a>. From
+the terraform documentation page:</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#8fa1b3;"># local-exec Provisioner
+
+</span><span style="color:#c0c5ce;">The local-exec provisioner invokes a local executable after a resource is created. This invokes a process on the machine running Terraform, not on the resource. See the remote-exec provisioner to run commands on the resource.
+</span></code></pre>
+<p>So what is this saying? This is saying that for any terraform <code>resource</code>, we
+can run arbitrary code locally (for remote execution, see the <a href="https://www.terraform.io/docs/provisioners/remote-exec.html"><code>remote-exec</code></a>
+provisioner). Now, the docs do call out that provisioners should only be used
+as a last resort, but we're going to use them for our own fun today, let's look
+at an example of how we'd do this:</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;"># This is the pre-existing `null_resource`, see the docs here:
+# https://www.terraform.io/docs/provisioners/null_resource.html
+resource &quot;null_resource&quot; &quot;cluster&quot; {
+ provisioner &quot;local-exec&quot; {
+    command = &quot;${path.module}/entry.sh&quot;
+  }
+}
+</span></code></pre>
+<p>Here, we're creating a <code>null_resource</code>, which won't actually create anything. By
+using the null resource, we can run arbitrary code without worrying about
+impacting any existing terraform state or having any other side effects.</p>
+<p>So what does it look like then we make a plan with this terraform code? Let's
+run <code>terraform init &amp;&amp; terraform plan -out=null_resource.tf.plan</code>:</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#bf616a;">------------------------------------------------------------------------
+
+An</span><span style="color:#c0c5ce;"> execution plan has been generated and is shown below.
+</span><span style="color:#bf616a;">Resource</span><span style="color:#c0c5ce;"> actions are indicated with the following symbols:
+  </span><span style="color:#bf616a;">+</span><span style="color:#c0c5ce;"> create
+
+</span><span style="color:#bf616a;">Terraform</span><span style="color:#c0c5ce;"> will perform the following actions:
+
+  </span><span style="color:#bf616a;">+</span><span style="color:#c0c5ce;"> module.demo.null_resource.cluster
+      </span><span style="color:#bf616a;">id: </span><span style="color:#c0c5ce;">&lt;computed&gt;
+
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+</span><span style="color:#bf616a;">------------------------------------------------------------------------
+</span></code></pre>
+<p>If we're trying to hide our actions, this isn't ideal - but in a larger module
+import, with potentially 10s to hundreds of resource creations, modifications or
+deletions, you'd be hard pressed to find this individual line. Note, that we
+haven't yet run our script, <code>entry.sh</code>. So let's apply our plan (<code>terraform apply null_resource.tf.plan</code>).</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#bf616a;">module.demo.null_resource.cluster:</span><span style="color:#c0c5ce;"> Creating...
+</span><span style="color:#bf616a;">module.demo.null_resource.cluster:</span><span style="color:#c0c5ce;"> Provisioning with &#39;</span><span style="color:#a3be8c;">local-exec</span><span style="color:#c0c5ce;">&#39;...
+</span><span style="color:#bf616a;">module.demo.null_resource.cluster</span><span style="color:#c0c5ce;"> (local-exec)</span><span style="color:#96b5b4;">:</span><span style="color:#c0c5ce;"> Executing: </span><span style="color:#b48ead;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">/bin/sh</span><span style="color:#c0c5ce;">&quot; &quot;</span><span style="color:#a3be8c;">-c</span><span style="color:#c0c5ce;">&quot; &quot;</span><span style="color:#a3be8c;">/&lt;redacted path&gt;/.terraform/modules/73a34264d981f034e09486899c66805b/entry.sh</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#b48ead;">]
+</span><span style="color:#bf616a;">module.demo.null_resource.cluster:</span><span style="color:#c0c5ce;"> Creation complete after 0s (ID: 4162867750964960682)
+
+</span><span style="color:#bf616a;">Apply</span><span style="color:#c0c5ce;"> complete! Resources: 1 added, 0 changed, 0 destroyed.
+</span></code></pre>
+<p>If you'd like to see a module that accomplishes this, check out
+<a href="https://github.com/ttacon/terraform-malicious-null-resource">this example here</a>.</p>
+<h1 id="running-code-via-external-data-sources">Running code via external data sources<a class="zola-anchor" href="#running-code-via-external-data-sources" aria-label="Anchor link for: running-code-via-external-data-sources"><i class="fas fa-link"></i></a> 
+</h1>
+<p>One of the other main concepts in Terraform are <a href="https://www.terraform.io/docs/configuration/data-sources.html">data sources</a>.
+A big difference here, is that if we're using a <code>provisioner</code> via a <code>resource</code>
+or from inside a <code>module</code>, we have to wait until the <code>apply</code> stage to execute
+our code. But data sources are items that pull information to be used later in
+our Terraform code, so via them, we can execute code at the <code>plan</code> stage. If
+all of this lifecycle discussion is confusing, don't worry, we'll get into
+this below.</p>
+<p>Back to running arbitrary code, so how can we pull this off via data sources?
+Luckily, Terraform provides an <a href="https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/data_source"><code>external</code> data source</a>
+that will allow us to run any program that we want. This could then look like
+this:</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#bf616a;">data </span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">external</span><span style="color:#c0c5ce;">&quot; &quot;</span><span style="color:#a3be8c;">entrypoint</span><span style="color:#c0c5ce;">&quot; {
+  program = </span><span style="color:#b48ead;">[</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#a3be8c;">bash</span><span style="color:#c0c5ce;">&quot;, &quot;$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">path.module</span><span style="color:#a3be8c;">}/entry.sh</span><span style="color:#c0c5ce;">&quot;</span><span style="color:#b48ead;">]
+</span><span style="color:#c0c5ce;">}
+</span></code></pre>
+<p>Where, again, <code>entry.sh</code> is a script that we bring along for the ride. With this
+code, when we <code>terraform init &amp;&amp; terraform plan</code>, we get:</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#bf616a;">terraform</span><span style="color:#c0c5ce;"> plan
+</span><span style="color:#bf616a;">Refreshing</span><span style="color:#c0c5ce;"> Terraform state in-memory prior to plan...
+</span><span style="color:#bf616a;">The</span><span style="color:#c0c5ce;"> refreshed state will be used to calculate this plan, but will not be
+</span><span style="color:#bf616a;">persisted</span><span style="color:#c0c5ce;"> to local or remote state storage.
+
+</span><span style="color:#bf616a;">data.external.entrypoint:</span><span style="color:#c0c5ce;"> Refreshing state...
+
+</span><span style="color:#bf616a;">------------------------------------------------------------------------
+
+No</span><span style="color:#c0c5ce;"> changes. Infrastructure is up-to-date.
+
+</span><span style="color:#bf616a;">This</span><span style="color:#c0c5ce;"> means that Terraform did not detect any differences between your
+</span><span style="color:#bf616a;">configuration</span><span style="color:#c0c5ce;"> and real physical resources that exist. As a result, no
+</span><span style="color:#bf616a;">actions</span><span style="color:#c0c5ce;"> need to be performed.
+</span></code></pre>
+<p>Looks like nothing happened, but our script has actually run!
+<a href="https://github.com/ttacon/terraform-malicious-example">Here's a module</a>
+that will help make this super clear.</p>
+<h2 id="gotchas">Gotchas<a class="zola-anchor" href="#gotchas" aria-label="Anchor link for: gotchas"><i class="fas fa-link"></i></a> 
+</h2>
+<p>A quick note on the <code>external</code> data source, there are a few gotchas that
+I stumbled over because I didn't read the docs clearly enough:</p>
+<ul>
+<li>You can provide any JSON object via the <a href="https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/data_source#query"><code>query</code> property</a></li>
+<li>Your program <strong>MUST</strong> return valid JSON (<a href="https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/data_source#external-program-protocol">see docs here</a>).</li>
+</ul>
+<h1 id="why-do-we-care">Why do we care?<a class="zola-anchor" href="#why-do-we-care" aria-label="Anchor link for: why-do-we-care"><i class="fas fa-link"></i></a> 
+</h1>
+<p>When we're running red team exercises, these techniques can be very useful to
+gain an initial foothold in a system - whether or not we running from an
+authenticated or privileged vantage point. Specifically, let's look at two ways
+we can use the above techniques to enter into a system.</p>
+<h2 id="local-developer-development">Local developer development<a class="zola-anchor" href="#local-developer-development" aria-label="Anchor link for: local-developer-development"><i class="fas fa-link"></i></a> 
+</h2>
+<p>Depending on an organization's operational maturity, there might be AWS
+credentials, SSH keys, etc lying around on a developer's machine. While a
+developer is developing new Terraform code, we can use the data source technique
+to get onto their machine. If a company doesn't have an automated build system
+for plannign and applying Terraform changes (hello <a href="https://www.hashicorp.com/products/terraform/">Terraform Cloud</a> and
+<a href="https://www.runatlantis.io/">Atlantis</a>), then we can use the our <code>resource</code>
+based technique as well.</p>
+<p>Hopefully, since we're on a developer machine, they're using expiring STS tokens
+and not more permanent and static credentials.</p>
+<h2 id="build-systems">Build systems<a class="zola-anchor" href="#build-systems" aria-label="Anchor link for: build-systems"><i class="fas fa-link"></i></a> 
+</h2>
+<p>Here's where this rabbit hole started for me. We often talk about zero trust
+systems, yet as developers we often treat our build systems with a high degree
+of trust - this is a <strong>BAD</strong> idea. Instead, we should consider our build system
+as a place that could be infected by almost anything and build in appropriate
+defenses, including, but not limited to:</p>
+<ul>
+<li>Turn off egress except for specifically proxied content</li>
+<li>Use our own internal registries with pinned, scanned content</li>
+<li>Run everything in containers with tightly controlled file system access and very limited environment variables</li>
+<li>Periodically purge build caches (if you use them)</li>
+<li>Process fingerprint our build runs (more on this in a later post)</li>
+</ul>
+<p>All of this is to say that we can use both of the above techniques to gain
+privileged access unless an organization maintains top notch security practices.</p>
+<h1 id="ways-to-identify-issues">Ways to identify issues<a class="zola-anchor" href="#ways-to-identify-issues" aria-label="Anchor link for: ways-to-identify-issues"><i class="fas fa-link"></i></a> 
+</h1>
+<p>Really only good security hygeine will help here - scan new modules and code for
+use of the <code>local-exec</code> provisioner (or the <code>remote-exec</code> provisioner, which we
+didn't talk about) and use of the <code>external</code> data source. Both of these can be
+entirely valid in the right scenarios, <strong>and</strong> we should always verify their
+usage.</p>
+<h1 id="future-research-areas">Future research areas<a class="zola-anchor" href="#future-research-areas" aria-label="Anchor link for: future-research-areas"><i class="fas fa-link"></i></a> 
+</h1>
+<p>Next up, I'll be sharing how you can use malicious Terraform providers as
+another foothold. Until then!</p>
+
+
+    </section>
+    <footer>
+        <nav class="c-pagination p-pagination">
+            <div class="c-pagination__ctrl">
+                <div class="c-pagination__newer">
+                    <a href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;education-vs-training&#x2F;">Education vs Training</a>
+                </div>
+                <div class="c-pagination__older">
+                    <a href="https:&#x2F;&#x2F;simulatedthoughts.blog&#x2F;security-awareness-training&#x2F;">Security awareness training that actually helps</a>
+                </div>
+            </div>
+        </nav>
+    </footer>
+</article>
+        </main>
+
+     
+      <footer class="l-footer">
+          <p class="p-copyright">
+              
+              
+    Copyright 2020
+
+          </p>
+      </footer>
+
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-51905853-4"></script>
+      <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-51905853-4');
+      </script> 
+      
+    </body>
+</html>
+            
