@@ -14,6 +14,7 @@ going to look at two very quick ways to run arbitrary code on the machines of
 developers (and build systems) before moving on to mention further avenues for
 exploration.
 
+<!-- more -->
 
 # Before we go on...
 

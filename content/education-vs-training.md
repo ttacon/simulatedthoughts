@@ -26,6 +26,7 @@ This is a framing that I keep coming back to in my mind, in particular, helping
 me to articulate and explore the gap that I feel exists in the software world
 today.
 
+<!-- more -->
 
 Software developers of traditional backgrounds usually pursue Computer Science
 or Computer Engineering degrees (the naming varies program by program). I myself

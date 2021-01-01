@@ -14,6 +14,8 @@ awareness training program that:
  1. Isn't incredibly boring (and so purely for compliance purposes)
  2. Will stick with your staff for very, very long periods of time
 
+<!-- more -->
+
 # First things first: NIST 800-50
 If you've never read [NIST 800-50](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-50.pdf),
 you should. While it's certainly dry, and fairly old, it contains invaluable
